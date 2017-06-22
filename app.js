@@ -34,7 +34,7 @@ const vm = new Vue({
 
       // Put Array into Chunks
       let i, j, chunkedArray = [], chunk = 4;
-      for (i = 0; i < posts.length; i += chunk, j++) {
+      for (i = 0, j = 0; i < posts.length; i += chunk, j++) {
         chunkedArray[j] = posts.slice(i, i + chunk);
       }
       return chunkedArray;
