@@ -1,6 +1,8 @@
+"use strict";
+
 // ./app.js
 const NYTbaseUrl = "https://api.nytimes.com/svc/topstories/v2/";
-const ApiKey = "637ccc32451647de87be2e19694bc59f";
+const ApiKey = config.KEY;
 const SECTIONS = "home, arts, automobiles, books, business, fashion, food, health, insider, magazine, movies, national, nyregion, obituaries, opinion, politics, realestate, science, sports, sundayreview, technology, theater, tmagazine, travel, upshot, world"; // From NYTimes
 
 function buildUrl(url) {
@@ -52,6 +54,8 @@ const vm = new Vue({
     results: [],
     sections: SECTIONS.split(', '), // create an array of the sections
     section: 'home', // set default section to 'home'
+    loading: true,
+    title: ''
   },
   mounted() {
     this.getPosts('home');
@@ -60,7 +64,10 @@ const vm = new Vue({
     getPosts(section) {
       let url = buildUrl(section);
       axios.get(url).then((response) => {
+        this.loading = false;
         this.results = response.data.results;
+        let title = this.section !== 'home' ? "Top stories in '" + this.section + "'today" : "Top stories today";
+        this.title = title + "(" + response.data.num_results+ ")";
       }).catch(error => { console.log(error); })
     }
   }
